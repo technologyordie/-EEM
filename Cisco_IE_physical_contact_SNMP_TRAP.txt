@@ -1,0 +1,41 @@
+
+!Config for the contacts them selves
+
+alarm contact 1 description CONTACT1
+alarm contact 1 severity major
+alarm contact 2 description CONTACT2
+alarm contact 2 severity major
+alarm relay-mode energized
+
+
+!  1.3.6.1.4.1.9.9.138.1.3.3.1.3  is the "variable" for physical index ie the contact
+!  1.3.6.1.4.1.9.9.138.2.0.1      is the "trap oid" that indicates "alarm asserted".  .2 is "alarm cleared"
+!  I compared these with the traps the switch will send on its own.
+!
+!  The only thing I did not test is how this is impact the other SNMP configuration on the switch around the "alert" type of events.
+!
+!  Please note EEM will work with LAN Base switches, however they will need to be running  15.2(5)E2  (The absolute latest code).
+!  If I can find your CCO / cisco.com ID I will share that .bin file with you in case you need to upgrade.
+!  I have to caviate the whole thing saying EEM is ***NOT*** Cisco supported (per TAC) however I kept this all as simple as posible for that reason...
+
+
+snmp-server enable traps event-manager
+event manager applet CONTACT1_ASSERT
+ event syslog pattern "PLATFORM_ENV-1-EXTERNAL_ALARM_CONTACT_ASSERT: Alarm asserted: CONTACT1"
+ action 1.0 info type snmp var "vbinds" oid 1.3.6.1.4.1.9.9.138.1.3.3.1.3 int 1
+ action 2.0 info type snmp trap enterprise-oid 1.3.6.1.4.1.9.9.138.2 generic-trapnum 6 specific-trapnum 1 trap-oid 1.3.6.1.4.1.9.9.138.2.0.1 trap-var "vbinds"
+
+event manager applet CONTACT1_CLEAR
+ event syslog pattern "PLATFORM_ENV-1-EXTERNAL_ALARM_CONTACT_CLEAR: Alarm cleared: CONTACT1"
+ action 1.0 info type snmp var "vbinds" oid 1.3.6.1.4.1.9.9.138.1.3.3.1.3 int 1
+ action 2.0 info type snmp trap enterprise-oid 1.3.6.1.4.1.9.9.138.2 generic-trapnum 6 specific-trapnum 1 trap-oid 1.3.6.1.4.1.9.9.138.2.0.2 trap-var "vbinds"
+
+event manager applet CONTACT2_ASSERT
+ event syslog pattern "PLATFORM_ENV-1-EXTERNAL_ALARM_CONTACT_ASSERT: Alarm asserted: CONTACT2"
+ action 1.0 info type snmp var "vbinds" oid 1.3.6.1.4.1.9.9.138.1.3.3.1.3 int 2
+ action 2.0 info type snmp trap enterprise-oid 1.3.6.1.4.1.9.9.138.2 generic-trapnum 6 specific-trapnum 1 trap-oid 1.3.6.1.4.1.9.9.138.2.0.1 trap-var "vbinds"
+
+event manager applet CONTACT2_CLEAR
+ event syslog pattern "PLATFORM_ENV-1-EXTERNAL_ALARM_CONTACT_CLEAR: Alarm cleared: CONTACT2"
+ action 1.0 info type snmp var "vbinds" oid 1.3.6.1.4.1.9.9.138.1.3.3.1.3 int 2
+ action 2.0 info type snmp trap enterprise-oid 1.3.6.1.4.1.9.9.138.2 generic-trapnum 6 specific-trapnum 1 trap-oid 1.3.6.1.4.1.9.9.138.2.0.2 trap-var "vbinds"
