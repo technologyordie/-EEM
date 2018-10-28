@@ -15,8 +15,7 @@ alarm relay-mode energized
 !  The only thing I did not test is how this is impact the other SNMP configuration on the switch around the "alert" type of events.
 !
 !  Please note EEM will work with LAN Base switches, however they will need to be running  15.2(5)E2  (The absolute latest code).
-!  If I can find your CCO / cisco.com ID I will share that .bin file with you in case you need to upgrade.
-!  I have to caviate the whole thing saying EEM is ***NOT*** Cisco supported (per TAC) however I kept this all as simple as posible for that reason...
+!  I have to caveat the whole thing saying EEM is ***NOT*** Cisco supported (per TAC) however I kept this all as simple as possible for that reason...
 
 
 snmp-server enable traps event-manager
